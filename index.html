@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Imigrasi Ngurah Rai</title>
+  <meta name="description" content="Portal modern Direktorat Jenderal Imigrasi Republik Indonesia dengan dark mode, search, dan layanan interaktif." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind config for custom themes
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              light: '#C0C0C0',
+              DEFAULT: '#4F46E5',
+              dark: '#4338CA'
+            },
+            accent: '#FACC15'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif']
+          },
+          boxShadow: {
+            'glass': '0 20px 60px -10px rgba(79,70,229,0.25)'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --transition: 0.35s cubic-bezier(.4,.2,.2,1);
+    }
+    .no-motion {
+      scroll-behavior: auto;
+    }
+    .glass {
+      background: rgba(255 255 255 / 0.08);
+       backdrop-filter: none;
+      border: 1px solid rgba(255 255 255 / 0.15);
+    }
+    .glass-dark {
+      background: rgba(17 24 39 / 0.7);
+       backdrop-filter: none;
+      border: 1px solid rgba(255 255 255 / 0.08);
+    }
+    /* subtle parallax on hero background */
+    .parallax-bg {
+      background-attachment: fixed;
+      background-position: center;
+      background-size: cover;
+      will-change: transform;
+    }
+    [data-theme="dark"] .invert-on-dark { filter: invert(1); }
+    .focus-ring:focus-visible {
+      outline: 3px solid rgba(79,70,229,0.75);
+      outline-offset: 2px;
+    }
+    .card-hover {
+      transform: perspective(800px);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .card-hover:hover {
+      transform: perspective(800px) translateY(-4px) scale(1.02);
+      box-shadow: 0 25px 50px -12px rgba(79,70,229,0.25);
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 24px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255,255,255,0.15);
+      transition: .3s;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      padding: 2px;
+    }
+    .slider::after {
+      content: '';
+      height: 20px;
+      width: 20px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transition: .3s;
+      transform: translateX(0);
+    }
+    input:checked + .slider {
+      background: rgba(99,102,241,0.9);
+    }
+    input:checked + .slider::after {
+      transform: translateX(24px);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-slate-50 to-white dark:from-[#0f172a] dark:to-[#1e2a4f] text-slate-900 dark:text-slate-100 antialiased flex flex-col min-h-screen font-sans" data-theme="light">
+
+  <!-- Header -->
+  <header class="fixed inset-x-0 top-0 z-50 backdrop-blur-md bg-white/60 dark:bg-[#0f172a]/80 border-b border-transparent dark:border-slate-700">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+      <div class="flex items-center gap-3">
+        <button id="menu-toggle" aria-label="Open menu" class="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 focus-ring" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="flex items-center space-x-2">
+            <img src="https://play-lh.googleusercontent.com/Dt4mOmrpH8nMsWotHSQhs0SvVgonpIyhJyWAdYWkQh2JXUXjPCllT30b3CziJLlGh96S=w600-h300-pc0xffffff-pd" alt="Logo Imigrasi" class="h-8 w-8 object-contain" />
+            <div class="flex flex-col leading-tight">
+              <span class="text-xs font-semibold uppercase tracking-wide">Direktorat Jenderal Imigrasi</span>
+              <span class="text-[10px]">Kantor Imigrasi Kelas I Khusus Tpi Ngurah Rai</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <!-- language & mode -->
+        <div class="flex items-center gap-3">
+          <div class="inline-flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 dark:ring-slate-600 divide-x overflow-hidden text-[10px]">
+            <button id="btn-id" class="px-3 py-1 bg-primary text-white text-[10px] font-medium focus-ring" aria-pressed="true">ID</button>
+            <button id="btn-en" class="px-3 py-1 hover:bg-primary hover:text-white text-[10px] font-medium focus-ring" aria-pressed="false">EN</button>
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="theme-toggle" class="sr-only" aria-label="Toggle dark mode" />
+              <div class="toggle-switch">
+                <div class="slider"></div>
+              </div>
+            </label>
+            <span class="text-xs hidden sm:inline">Dark Mode</span>
+          </div>
+        </div>
+        <div class="text-xs hidden sm:inline">© Imigrasi Ngurah Rai</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <div id="overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"></div>
+  <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 max-w-xs transform -translate-x-full z-50 flex flex-col bg-white/90 dark:bg-[#111e3d]/90 glass shadow-lg transition-transform duration-300">
+    <div class="p-6 flex flex-col h-full">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-lg font-semibold">Menu</h2>
+        <button id="close-sidebar" aria-label="Close sidebar" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700 focus-ring">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <nav class="flex-grow">
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-primary/20 transition">Beranda</a></li>
+          <li><a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-primary/20 transition">Layanan Paspor</a></li>
+          <li><a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-primary/20 transition">Visa & Izin Tinggal</a></li>
+          <li><a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-primary/20 transition">Informasi</a></li>
+          <li><a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-primary/20 transition">Kontak</a></li>
+        </ul>
+      </nav>
+      <div class="mt-auto text-[11px]">
+        <p>Versi modern • Akses cepat • Aman</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-grow pt-20">
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0">
+        <div class="parallax-bg h-full w-full" style="background-image: linear-gradient(135deg, rgba(79,70,229,0.6), rgba(99,102,241,0.4)), url('https://uluwatusilverclass.com/wp-content/uploads/2025/06/Uluwatu-Temple-sunset-e1750298537719.jpg'); background-blend-mode: overlay;"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+      </div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center flex flex-col items-center">
+        <div class="max-w-xl w-full">
+          <div class="mb-4 inline-flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-4 py-1 text-xs font-semibold text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m-1-3h2m4 3a9 9 0 11-6-8.485"/>
+            </svg>
+            <span>Imtelligence</span>
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-bold leading-tight text-white drop-shadow-lg mb-4">Selamat Datang Di Kantor Imigrasi Kelas I Khsusus Tpi Ngurah Rai</h1>
+          <p class="text-sm sm:text-base text-white/90 mb-8">Portal Resmi Kantor Imigrasi Ngurah Rai.</p>
+
+          <!-- Search -->
+          <div class="relative w-full">
+            <div class="flex items-center bg-white rounded-full shadow-md overflow-hidden max-w-2xl mx-auto">
+              <div class="px-4 flex items-center text-primary font-semibold select-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <span class="hidden sm:inline">Cari Layanan</span>
+              </div>
+              <input
+                type="text"
+                id="auto-placeholder"
+                aria-label="Cari layanan imigrasi"
+                class="flex-grow px-4 py-3 text-sm bg-transparent text-white placeholder:text-slate-300 placeholder:font-bold font-bold focus:outline-none focus:ring-2 focus:ring-primary rounded-none"
+                placeholder=""
+              />
+              <script>
+                const typingInput = document.getElementById("auto-placeholder");
+
+                const phrases = [
+                  "Bagaimana mengajukan paspor baru?",
+                  "Bagaimana cara mengajukan visa?",
+                  "Berapa biaya paspor hilang?",
+                  "Dimana lokasi kantor imigrasi terdekat?",
+                  "Apa syarat izin tinggal?"
+                ];
+
+                let currentPhrase = 0;
+                let currentChar = 0;
+                let typing = true;
+
+                function typeLoop() {
+                  const phrase = phrases[currentPhrase];
+
+                  if (typing) {
+                    currentChar++;
+                    if (currentChar > phrase.length) {
+                      typing = false;
+                      setTimeout(typeLoop, 1800);
+                      return;
+                    }
+                  } else {
+                    currentChar--;
+                    if (currentChar === 0) {
+                      typing = true;
+                      currentPhrase = (currentPhrase + 1) % phrases.length;
+                    }
+                  }
+
+                  typingInput.placeholder = phrase.substring(0, currentChar);
+                  setTimeout(typeLoop, typing ? 100 : 40);
+                }
+
+                typeLoop();
+              </script>
+
+              <button aria-label="Cari" class="px-5 py-3 bg-primary text-white font-semibold rounded-r-full hover:brightness-105 transition focus-ring">
+                Cari
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick links cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+  <!-- Layanan Paspor -->
+  <a href="page1.html" aria-label="Layanan Paspor" class="group block">
+    <div tabindex="0" class="glass dark:glass-dark p-5 rounded-2xl card-hover relative overflow-hidden flex flex-col h-full focus:ring-2 focus:ring-primary">
+      <div class="flex items-start gap-3">
+        <div class="flex-shrink-0">
+          <div class="p-3 bg-primary/10 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm0 0v3m0 0v3m1-3h-2m4 3a9 9 0 11-6-8.485"/>
+            </svg>
+          </div>
+        </div>
+        <div class="flex-grow">
+          <h3 class="text-md font-semibold mb-1">Layanan Paspor</h3>
+          <p class="text-[13px] text-slate-700 dark:text-slate-300">Informasi persyaratan, penggantian, dan pengajuan paspor baru.</p>
+        </div>
+      </div>
+    </div>
+  </a>
+          <div tabindex="0" role="link" aria-label="Visa" class="glass dark:glass-dark p-5 rounded-2xl card-hover relative overflow-hidden">
+            <div class="flex items-start gap-3">
+              <div class="flex-shrink-0">
+                <div class="p-3 bg-primary/10 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m2 0a8 8 0 11-16 0 8 8 0 0116 0z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="flex-grow">
+                <h3 class="text-md font-semibold mb-1">Visa & Izin Tinggal</h3>
+                <p class="text-[13px] text-slate-700 dark:text-slate-300">Lihat opsi visa dan prosedur izin tinggal.</p>
+              </div>
+            </div>
+          </div>
+          <div tabindex="0" role="link" aria-label="Izin tinggal" class="glass dark:glass-dark p-5 rounded-2xl card-hover relative overflow-hidden">
+            <div class="flex items-start gap-3">
+              <div class="flex-shrink-0">
+                <div class="p-3 bg-primary/10 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="flex-grow">
+                <h3 class="text-md font-semibold mb-1">Ajukan Izin Tinggal</h3>
+                <p class="text-[13px] text-slate-700 dark:text-slate-300">Prosedur dan persyaratan izin tinggal.</p>
+              </div>
+            </div>
+          </div>
+          <div tabindex="0" role="link" aria-label="FAQ" class="glass dark:glass-dark p-5 rounded-2xl card-hover relative overflow-hidden">
+            <div class="flex items-start gap-3">
+              <div class="flex-shrink-0">
+                <div class="p-3 bg-primary/10 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4-.8L3 20l1.11-3.108A7.953 7.953 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="flex-grow">
+                <h3 class="text-md font-semibold mb-1">Pertanyaan Umum</h3>
+                <p class="text-[13px] text-slate-700 dark:text-slate-300">Jawaban cepat untuk pertanyaan yang sering muncul.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Promo / Banner -->
+        <div class="mt-12 max-w-5xl mx-auto bg-gradient-to-r from-primary to-indigo-400 rounded-3xl p-6 flex flex-col sm:flex-row gap-6 items-center shadow-glass">
+          <div class="flex-1">
+            <p class="text-sm text-white font-medium mb-2">Eksplorasi tanpa batas, <span class="font-bold">keistimewaan ada di tanganmu.</span></p>
+            <p class="text-xs text-white/90">Program visa eksklusif dan layanan prioritas untuk pelancong modern.</p>
+          </div>
+          <div class="flex-shrink-0">
+            <button class="inline-flex items-center gap-2 bg-white text-primary font-semibold px-5 py-2 rounded-full shadow hover:scale-[1.02] transition focus-ring" aria-label="Discover Golden Visa">
+              <a href="https://www.imigrasi.go.id/wna/permohonan-visa-republik-indonesia?golden_visa=1">Discover Golden Visa</a>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Secondary services -->
+    <section class="py-16 px-4">
+      <div class="max-w-6xl mx-auto text-center mb-8">
+        <p class="text-base sm:text-lg font-medium">Dengan platform kami, mendapatkan visa elektronik Anda menjadi lebih mudah dan cepat untuk merencanakan perjalanan tak terlupakan.</p>
+      </div>
+      <div class="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="p-6 bg-white/90 dark:bg-[#111e3d]/90 rounded-2xl glass shadow card-hover flex flex-col items-center text-center">
+          <div class="mb-3">
+            <div class="p-4 bg-primary/10 rounded-full inline-block">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7"/>
+              </svg>
+            </div>
+          </div>
+          <h4 class="font-semibold mb-1">e-VISA Paspor</h4>
+          <p class="text-sm mb-2">Permohonan paspor elektronik dengan langkah mudah.</p>
+          <button class="mt-auto inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full border border-primary hover:bg-primary/5 transition focus-ring">
+           <a href="https://evisa.imigrasi.go.id/">Lihat Detail</a> 
+          </button>
+        </div>
+        <div class="p-6 bg-white/90 dark:bg-[#111e3d]/90 rounded-2xl glass shadow card-hover flex flex-col items-center text-center">
+          <div class="mb-3">
+            <div class="p-4 bg-primary/10 rounded-full inline-block">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m2 0a8 8 0 11-16 0 8 8 0 0116 0z"/>
+              </svg>
+            </div>
+          </div>
+          <h4 class="font-semibold mb-1">Electronic Visa</h4>
+          <p class="text-sm mb-2">Visa untuk berbagai keperluan perjalanan.</p>
+          <button class="mt-auto inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full border border-primary hover:bg-primary/5 transition focus-ring">
+            <a href="https://evisa.imigrasi.go.id/">Lihat Detail</a> 
+          </button>
+        </div>
+        <div class="p-6 bg-white/90 dark:bg-[#111e3d]/90 rounded-2xl glass shadow card-hover flex flex-col items-center text-center">
+          <div class="mb-3">
+            <div class="p-4 bg-primary/10 rounded-full inline-block">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h4l3-3 4 4 5-5v10H3z"/>
+              </svg>
+            </div>
+          </div>
+          <h4 class="font-semibold mb-1">E-VISA on Arrival</h4>
+          <p class="text-sm mb-2">Kemudahan visa saat kedatangan.</p>
+          <button class="mt-auto inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full border border-primary hover:bg-primary/5 transition focus-ring">
+             <a href="https://evisa.imigrasi.go.id/">Lihat Detail</a> 
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Floating action buttons -->
+  <div class="fixed right-4 bottom-1/3 flex flex-col gap-3 z-50">
+    <button aria-label="Chat" class="p-3 bg-white dark:bg-[#1e2a4f] rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition focus-ring">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4-.8L3 20l1.11-3.108A7.953 7.953 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+      </svg>
+    </button>
+    <button aria-label="Email" class="p-3 bg-white dark:bg-[#1e2a4f] rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition focus-ring" onclick="location.href='mailto:contact@imigrasi.go.id'">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18-2h18a2 2 0 012 2v8a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z"/>
+      </svg>
+    </button>
+    <button aria-label="Share" class="p-3 bg-white dark:bg-[#1e2a4f] rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition focus-ring">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 12v.01M12 4v.01M20 12v.01M12 20v.01M16.24 7.76l.01.01M7.76 16.24l.01.01M7.76 7.76l.01.01M16.24 16.24l.01.01"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Sidebar toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const closeSidebar = document.getElementById('close-sidebar');
+    function openSidebar() {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      overlay.classList.add('opacity-100');
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+    function hideSidebar() {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('opacity-0');
+      setTimeout(()=> overlay.classList.add('pointer-events-none'), 300);
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+    menuToggle.addEventListener('click', () => {
+      if (sidebar.classList.contains('-translate-x-full')) openSidebar();
+      else hideSidebar();
+    });
+    closeSidebar.addEventListener('click', hideSidebar);
+    overlay.addEventListener('click', hideSidebar);
+
+    // Language toggle (basic demo)
+    const btnId = document.getElementById('btn-id');
+    const btnEn = document.getElementById('btn-en');
+    function setLang(lang) {
+      if (lang === 'id') {
+        btnId.classList.add('bg-primary', 'text-white');
+        btnId.setAttribute('aria-pressed','true');
+        btnEn.classList.remove('bg-primary','text-white');
+        btnEn.setAttribute('aria-pressed','false');
+        document.querySelector('h1').textContent = 'Selamat Datang Di Kantor Imigrasi Kelas I Khusus Tpi Ngurah Rai';
+      } else {
+        btnEn.classList.add('bg-primary', 'text-white');
+        btnEn.setAttribute('aria-pressed','true');
+        btnId.classList.remove('bg-primary','text-white');
+        btnId.setAttribute('aria-pressed','false');
+        document.querySelector('h1').textContent = 'Welcome to Imigrasi Kelas I Khusus Tpi Ngurah Rai';
+      }
+    }
+    btnId.addEventListener('click', () => setLang('id'));
+    btnEn.addEventListener('click', () => setLang('en'));
+
+    // Dark mode persistence
+    const toggle = document.getElementById('theme-toggle');
+    const htmlEl = document.documentElement;
+    const bodyEl = document.body;
+    const saved = localStorage.getItem('theme');
+    function applyTheme(mode) {
+      if (mode === 'dark') {
+        htmlEl.classList.add('dark');
+        bodyEl.setAttribute('data-theme','dark');
+        toggle.checked = true;
+      } else {
+        htmlEl.classList.remove('dark');
+        bodyEl.setAttribute('data-theme','light');
+        toggle.checked = false;
+      }
+    }
+    if (saved) applyTheme(saved);
+    else {
+      // system preference fallback
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(prefersDark ? 'dark' : 'light');
+    }
+    toggle.addEventListener('change', () => {
+      const next = toggle.checked ? 'dark' : 'light';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    // Reduce motion respect
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) document.documentElement.classList.add('no-motion');
+  </script>
+</body>
+</html>
+<!-- Berita dan Siaran Pers -->
+<section class="mt-16 bg-[#1f3254] relative overflow-hidden py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Row utama -->
+    <div class="flex flex-col lg:flex-row gap-10 items-start">
+      
+      <!-- Maskot di sebelah kiri (desktop only) -->
+      <div class="hidden lg:block w-[200px] flex-shrink-0">
+        <img src="C:\file dede\kerja\foto\test1.png" alt="Maskot Imigrasi" class="w-full h-auto object-contain" />
+      </div>
+
+      <!-- Konten utama: Judul + Carousel -->
+      <div class="flex-1 flex flex-col gap-10">
+        <!-- Judul -->
+        <div class="text-white">
+          <h2 class="text-3xl font-bold mb-2">Berita dan Siaran Pers</h2>
+          <p class="text-sm mb-6">Kantor Kelas I Khsus Tpi Ngurah Rai.</p>
+          <div class="flex items-center gap-2">
+            <button aria-label="Previous" id="news-prev" class="flex items-center justify-center w-12 h-10 bg-white/10 hover:bg-white/20 rounded-md border border-white/30 focus-ring">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button aria-label="Next" id="news-next" class="flex items-center justify-center w-12 h-10 bg-white/10 hover:bg-white/20 rounded-md border border-white/30 focus-ring">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Carousel cards -->
+        <div class="relative overflow-hidden">
+          <div id="news-container" class="flex gap-8 overflow-x-auto no-scrollbar py-2 scroll-smooth">
+            <!-- Card 1 -->
+            <div class="min-w-[280px] max-w-[320px] bg-white rounded-xl shadow-xl flex-shrink-0 overflow-hidden transform transition hover:scale-[1.02]">
+              <div class="h-44 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/320x180.png?text=Foto+1');"></div>
+              <div class="p-5">
+                <div class="flex items-center text-[11px] text-slate-500 mb-1 gap-2">
+                  <span>19 Jul 2025</span>
+                  <span class="inline-block px-2 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px]">Siaran Pers</span>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Operasi Wira Waspada Serentak 2025, Imigrasi …</h3>
+                <p class="text-[12px] text-slate-600 mb-4 leading-relaxed">
+                  JAKARTA – Direktorat Jenderal (Ditjen) Imigrasi melaksanakan operasi pengawasan orang asing serentak tahun 2025...
+                </p>
+                <button class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 bg-[#0f172a] text-white rounded-md hover:brightness-105 transition focus-ring">
+                  Baca Selengkapnya
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="min-w-[280px] max-w-[320px] bg-white rounded-xl shadow-xl flex-shrink-0 overflow-hidden transform transition hover:scale-[1.02]">
+              <div class="h-44 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/320x180.png?text=Foto+2');"></div>
+              <div class="p-5">
+                <div class="flex items-center text-[11px] text-slate-500 mb-1 gap-2">
+                  <span>17 Jul 2025</span>
+                  <span class="inline-block px-2 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px]">Siaran Pers</span>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Paspor Desain Merah Putih Ditunda, Imigrasi F…</h3>
+                <p class="text-[12px] text-slate-600 mb-4 leading-relaxed">
+                  JAKARTA – Direktorat Jenderal (Ditjen) Imigrasi menunda implementasi paspor desain merah putih yang sedianya akan...
+                </p>
+                <button class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 bg-[#0f172a] text-white rounded-md hover:brightness-105 transition focus-ring">
+                  Baca Selengkapnya
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="min-w-[280px] max-w-[320px] bg-white rounded-xl shadow-xl flex-shrink-0 overflow-hidden transform transition hover:scale-[1.02]">
+              <div class="h-44 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/320x180.png?text=Foto+3');"></div>
+              <div class="p-5">
+                <div class="flex items-center text-[11px] text-slate-500 mb-1 gap-2">
+                  <span>17 Jul 2025</span>
+                  <span class="inline-block px-2 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px]">Berita</span>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Kunjungan Kerja dan Penguatan Sistem Imigrasi</h3>
+                <p class="text-[12px] text-slate-600 mb-4 leading-relaxed">
+                  Banda Aceh – Tim Imigrasi melakukan kunjungan kerja untuk memperkuat koordinasi dan pengawasan...
+                </p>
+                <button class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 bg-[#0f172a] text-white rounded-md hover:brightness-105 transition focus-ring">
+                  Baca Selengkapnya
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Informasi Terbaru tanpa Siaran Pers -->
+<section class="mt-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="flex flex-col lg:flex-row gap-10">
+    <!-- Tabs list -->
+    <div class="w-full lg:w-1/4">
+      <h2 class="text-2xl font-semibold mb-4">Informasi Kementrian Imigrasi Dan Berita Terkini</h2>
+      <div id="info-tabs" class="space-y-2">
+        <button data-tab="kurs" class="w-full flex items-center gap-3 px-4 py-4 rounded-xl text-sm font-medium bg-white shadow focus:ring-2 focus:ring-primary flex-nowrap" aria-selected="true">
+          <div class="p-2 bg-primary/10 rounded-full flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M3 3h18v4H3V3zm0 6h12v4H3V9zm0 6h6v4H3v-4z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span>E-visa</span>
+        </button>
+        <button data-tab="pengumuman" class="w-full flex items-center gap-3 px-4 py-4 rounded-xl text-sm font-medium bg-primary/90 text-white focus:ring-2 focus:ring-primary flex-nowrap" aria-selected="false">
+          <div class="p-2 bg-white rounded-full flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M9 12h6m2 0a8 8 0 11-16 0 8 8 0 0116 0z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span>E-Paspor</span>
+        </button>
+        <button data-tab="apbn" class="w-full flex items-center gap-3 px-4 py-4 rounded-xl text-sm font-medium bg-primary/90 text-white focus:ring-2 focus:ring-primary flex-nowrap" aria-selected="false">
+          <div class="p-2 bg-white rounded-full flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span>Grafik Kunjungan</span>
+        </button>
+        <button data-tab="peraturan" class="w-full flex items-center gap-3 px-4 py-4 rounded-xl text-sm font-medium bg-primary/90 text-white focus:ring-2 focus:ring-primary flex-nowrap" aria-selected="false">
+          <div class="p-2 bg-white rounded-full flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span>Peraturan Terbaru</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content grid -->
+    <div class="flex-1">
+      <div id="tab-panels" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Kurs Pajak (default aktif) -->
+        <div data-panel="kurs" class="bg-white rounded-xl shadow border border-slate-200 p-5 flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <div class="text-[11px] text-slate-500">Kamis</div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-500">
+              <span>31 Juli 2025</span>
+              <span class="w-2 h-2 rounded-full bg-yellow-400 inline-block"></span>
+              <span>10.30</span>
+            </div>
+          </div>
+          <h3 class="text-base font-semibold text-blue-700 mb-2">
+            Update Kurs Pajak: Kebijakan Baru Tahun 2025
+          </h3>
+          <p class="text-[13px] text-slate-600 flex-grow leading-relaxed">
+            Informasi terbaru mengenai perubahan kurs pajak untuk transaksi lintas negara dan dampaknya bagi pelaku usaha.
+          </p>
+          <div class="mt-4">
+            <a href="#" class="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:underline">
+              Selengkapnya
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Pengumuman -->
+        <div data-panel="pengumuman" class="hidden bg-white rounded-xl shadow border border-slate-200 p-5 flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <div class="text-[11px] text-slate-500">Selasa</div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-500">
+              <span>29 Juli 2025</span>
+              <span class="w-2 h-2 rounded-full bg-yellow-400 inline-block"></span>
+              <span>14.00</span>
+            </div>
+          </div>
+          <h3 class="text-base font-semibold text-blue-700 mb-2">
+            Pengumuman: Pembaruan Sistem Layanan Publik
+          </h3>
+          <p class="text-[13px] text-slate-600 flex-grow leading-relaxed">
+            Detail pengumuman terbaru terkait peningkatan sistem layanan publik untuk meningkatkan efisiensi dan transparansi.
+          </p>
+          <div class="mt-4">
+            <a href="#" class="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:underline">
+              Selengkapnya
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- APBN Kita -->
+        <div data-panel="apbn" class="hidden bg-white rounded-xl shadow border border-slate-200 p-5 flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+        <!-- Grafik APBN saja -->
+<section class="mt-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="bg-white rounded-2xl shadow-lg p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-semibold">APBN</h2>
+      <div class="text-sm text-slate-500">2020–2025</div>
+    </div>
+    <div class="w-full">
+      <canvas id="apbnOnlyChart" aria-label="Grafik APBN 2020 sampai 2025" role="img" height="220"></canvas>
+    </div>
+    <div class="mt-2 flex gap-4 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background:#1e4ed8;"></span>
+        <span>Belanja</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background:#facc15;"></span>
+        <span>Pendapatan</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  const ctx = document.getElementById('apbnOnlyChart');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
+        datasets: [
+          {
+            label: 'Belanja',
+            data: [1700, 1750, 1800, 2420, 2800, 3000],
+            backgroundColor: '#1e4ed8',
+            stack: 'stack1',
+            borderRadius: 6,
+          },
+          {
+            label: 'Pendapatan',
+            data: [2700, 2750, 2750, 3080, 3300, 3600],
+            backgroundColor: '#facc15',
+            stack: 'stack1',
+            borderRadius: 6,
+          }
+        ]
+      },
+      options: {
+        plugins: {
+          legend: { display: false }, // kita buat legend manual di bawah
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            padding: 10,
+            callbacks: {
+              label: function(ctx) {
+                return ctx.dataset.label + ': ' + ctx.formattedValue.toLocaleString();
+              }
+            }
+          }
+        },
+        responsive: true,
+        interaction: { intersect: false, mode: 'index' },
+        scales: {
+          x: {
+            stacked: true,
+            grid: { display: false },
+            ticks: { font: { size: 12 } }
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            grid: {
+              drawBorder: false,
+              color: 'rgba(200,200,200,0.2)'
+            },
+            ticks: {
+              stepSize: 1000,
+              callback: value => value.toLocaleString(),
+              font: { size: 12 }
+            }
+          }
+        }
+      }
+    });
+  }
+</script>
+
+
+
+        <!-- Peraturan Terbaru -->
+        <div data-panel="peraturan" class="hidden bg-white rounded-xl shadow border border-slate-200 p-5 flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <div class="text-[11px] text-slate-500">Jumat</div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-500">
+              <span>25 Juli 2025</span>
+              <span class="w-2 h-2 rounded-full bg-yellow-400 inline-block"></span>
+              <span>09.00</span>
+            </div>
+          </div>
+          <h3 class="text-base font-semibold text-blue-700 mb-2">
+            Peraturan Terbaru: Penyempurnaan Tata Kelola
+          </h3>
+          <p class="text-[13px] text-slate-600 flex-grow leading-relaxed">
+            Pemaparan singkat tentang peraturan baru yang meningkatkan tata kelola dan akuntabilitas dalam layanan publik.
+          </p>
+          <div class="mt-4">
+            <a href="#" class="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:underline">
+              Selengkapnya
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selengkapnya -->
+      <div class="mt-6 flex justify-end">
+        <a href="#" class="text-sm font-semibold text-primary inline-flex items-center gap-1">
+          Selengkapnya
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tab switching logic -->
+<script>
+  const tabs = document.querySelectorAll('#info-tabs [data-tab]');
+  const panels = document.querySelectorAll('#tab-panels [data-panel]');
+  function activate(tabKey) {
+    tabs.forEach(btn => {
+      const is = btn.getAttribute('data-tab') === tabKey;
+      if (is) {
+        btn.classList.remove('bg-primary/90', 'text-white');
+        btn.classList.add('bg-white', 'text-slate-900');
+        btn.setAttribute('aria-selected', 'true');
+      } else {
+        btn.classList.add('bg-primary/90', 'text-white');
+        btn.classList.remove('bg-white', 'text-slate-900');
+        btn.setAttribute('aria-selected', 'false');
+      }
+    });
+    panels.forEach(p => {
+      if (p.getAttribute('data-panel') === tabKey) {
+        p.classList.remove('hidden');
+      } else {
+        p.classList.add('hidden');
+      }
+    });
+  }
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      activate(t.getAttribute('data-tab'));
+    });
+  });
+  // Default aktif: kurs
+  activate('kurs');
+</script>
+
+  
+
+<!-- Footer + Situs Terkait -->
+<footer class="bg-[#1f3254] text-slate-100 pt-16 pb-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Situs Terkait Logos -->
+    <div class="mb-12 text-center">
+      <h3 class="text-2xl font-bold mb-4">Situs Terkait</h3>
+      <div class="flex flex-wrap justify-center items-center gap-12">
+        <!-- Logo placeholders -->
+        <div class="flex flex-col items-center text-center max-w-[140px]">
+          <div class="mb-2">
+            <!-- contoh logo -->
+          
+          </div>
+      </div>
+    </div>
+    <!-- Copyright / info -->
+    <footer class="bg-[#1f3254] text-slate-100 pt-16 pb-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
+    <!-- Copyright / info + map di sebelah kanan (tapi ditengah secara overall) -->
+    <div class="w-full border-t border-slate-600 pt-8 flex flex-col md:flex-row justify-center items-start text-sm gap-8">
+      <!-- Info -->
+      <div class="flex-1 flex justify-center mb-6 md:mb-0">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
+            <img src="https://play-lh.googleusercontent.com/Dt4mOmrpH8nMsWotHSQhs0SvVgonpIyhJyWAdYWkQh2JXUXjPCllT30b3CziJLlGh96S=w600-h300-pc0xffffff-pd" alt="Logo Imigrasi" class="object-contain" />
+          </div>
+          <div class="text-left">
+            <p class="font-semibold">Kantor Imigrasi Kelas I Khusus Tpi Ngurah Rai</p>
+            <p class="text-[12px]">Jl. Raya Ngurah Rai, Bali, Indonesia</p>
+            <p class="text-[12px]">contact@ImigrasiNgurahrai.go.id</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map “ceil” -->
+      <div class="flex-1 flex justify-center min-w-[280px]">
+        <div class="w-full max-w-sm">
+          <p class="font-semibold mb-2">Lokasi</p>
+          <div class="relative h-48 rounded-xl overflow-hidden shadow-xl border border-slate-200 bg-white">
+            <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-400 to-[#6366F1]"></div>
+            <iframe
+              src="https://www.google.com/maps?q=-8.7266,115.1668&z=15&output=embed"
+              class="absolute inset-0 w-full h-full border-0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              aria-label="Peta lokasi Kantor Imigrasi Kelas I Khusus Tpi Ngurah Rai">
+            </iframe>
+          </div>
+          <div class="mt-1">
+            <a href="https://maps.app.goo.gl/gfPQmWfmaqcnSvbK7" target="_blank" rel="noopener" class="text-xs text-yellow-300 hover:underline">
+              Lihat di Google Maps →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Links (centered) -->
+    <div class="mt-10 w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="flex flex-col items-center">
+        <p class="font-semibold mb-2">Layanan Situs</p>
+        <ul class="space-y-1 text-[13px]">
+          <li><a href="#" class="hover:underline">Paspor</a></li>
+          <li><a href="#" class="hover:underline">Visa Indonesia</a></li>
+          <li><a href="#" class="hover:underline">Izin Tinggal</a></li>
+          <li><a href="#" class="hover:underline">Status Permohonan</a></li>
+          <li><a href="#" class="hover:underline">Biaya Keimigrasian</a></li>
+        </ul>
+      </div>
+      <div class="flex flex-col items-center">
+        <p class="font-semibold mb-2">Informasi</p>
+        <ul class="space-y-1 text-[13px]">
+          <li><a href="#" class="hover:underline">Informasi Publik</a></li>
+          <li><a href="#" class="hover:underline">UU Keimigrasian</a></li>
+          <li><a href="#" class="hover:underline">Peraturan</a></li>
+          <li><a href="#" class="hover:underline">Produk Hukum</a></li>
+          <li><a href="#" class="hover:underline">Jurnal</a></li>
+        </ul>
+      </div>
+      <div class="flex flex-col items-center">
+        <p class="font-semibold mb-2">Bantuan</p>
+        <ul class="space-y-1 text-[13px]">
+          <li><a href="#" class="hover:underline">FAQ</a></li>
+          <li><a href="#" class="hover:underline">Kontak</a></li>
+          <li><a href="#" class="hover:underline">Panduan</a></li>
+          <li><a href="#" class="hover:underline">Syarat & Ketentuan</a></li>
+        </ul>
+      </div>
+      <div class="flex flex-col items-center">
+        <p class="font-semibold mb-2">Lainnya</p>
+        <ul class="space-y-1 text-[13px]">
+          <li><a href="#" class="hover:underline">Karir</a></li>
+          <li><a href="#" class="hover:underline">Berita</a></li>
+          <li><a href="#" class="hover:underline">Pengumuman</a></li>
+          <li><a href="#" class="hover:underline">Sitemap</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-6 text-center text-[12px]">
+      <p>© 2025 Kantor Imigrasi Kelas I Khsusus Tpi Ngurah Rai. Semua hak dilindungi.</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Optional small script for carousel navigation -->
+<script>
+  const container = document.getElementById('news-container');
+  document.getElementById('news-next').addEventListener('click', () => {
+    container.scrollBy({ left: 340, behavior: 'smooth' });
+  });
+  document.getElementById('news-prev').addEventListener('click', () => {
+    container.scrollBy({ left: -340, behavior: 'smooth' });
+  });
+</script>

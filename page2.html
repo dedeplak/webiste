@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id" class="antialiased">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Paspor Baru — Imigrasi Ngurah Rai</title>
+  <script>
+    tailwind = { config: { darkMode: 'class', theme: { extend: { colors: { primary: '#1f3254', accent: '#6366F1' } } } } };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Modern light background dengan gradient + noise */
+body {
+  background: 
+    linear-gradient(135deg, rgba(245,247,250,1) 0%, rgba(230,235,242,1) 60%),
+    url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='p' width='40' height='40' patternUnits='userSpaceOnUse'%3E%3Cpath d='M0 40 L40 0 M-10 10 L10 -10 M30 50 L50 30' stroke='%23dbe2ec' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23p)'/%3E%3C/svg%3E") repeat;
+  background-blend-mode: overlay;
+  color: #1f2d44;
+  font-family: system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+/* Card yang kontras tapi ringan */
+.card {
+  background: white;
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -10px rgba(31,50,84,0.07);
+}
+
+/* Header / breadcrumb area sedikit transparan agar terasa lapis */
+header {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+}
+
+/* Aksen gradient untuk garis judul */
+.accent-bar {
+  background: linear-gradient(90deg, #6366F1, #8b9cff);
+  height: 4px;
+  border-radius: 2px;
+}
+
+    body { background: #f5f7fa; }
+    [data-theme="dark"] { background: #0f172a; color: #e3e8ff; }
+    [data-theme="dark"] .card { background: rgba(17,24,39,.9); }
+    [data-theme="dark"] .breadcrumb a { color: #cbd5e1; }
+    [data-theme="dark"] .breadcrumb { background: rgba(255,255,255,0.04); }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-slate-900" data-theme="light">
+  <!-- Top bar / breadcrumb -->
+  <header class="sticky top-0 z-40 bg-white dark:bg-[#1f3254] border-b border-slate-200 dark:border-slate-700">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 px-4 py-3">
+      <div class="flex items-center gap-2 text-sm breadcrumb rounded-full px-3 py-1 bg-slate-100 dark:bg-[#1f2e55]">
+        <a href="index.html" class="text-slate-600 hover:underline">Beranda</a>
+        <span class="mx-1">›</span>
+        <a href="page1.html" class="text-slate-600 hover:underline">Menu Layanan Paspor</a>
+        <span class="mx-1">›</span>
+        <span class="font-semibold">Paspor Baru</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <!-- Dark mode toggle -->
+        <button id="theme-toggle" aria-label="Toggle dark mode" class="flex items-center gap-2 px-3 py-1 bg-slate-200 dark:bg-slate-700 rounded-full text-xs">
+          <span id="theme-icon">🌙</span>
+          <span class="hidden sm:inline">Dark Mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <!-- Sidebar -->
+    <aside class="lg:col-span-4">
+      <div class="sticky top-24 space-y-4">
+        <div class="text-2xl font-bold mb-4">Paspor Baru</div>
+        <div class="bg-white dark:bg-[#1f2e55] rounded-xl card-shadow overflow-hidden">
+          <nav class="flex flex-col divide-y dark:divide-slate-700">
+            <a href="#" class="px-4 py-3 flex justify-between items-center hover:bg-slate-50 dark:hover:bg-[#1f355f] transition">
+              <div>Masyarakat Umum</div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="#" class="px-4 py-3 flex justify-between items-center hover:bg-slate-50 dark:hover:bg-[#1f355f] transition">
+              <div>Anak di bawah 17 Tahun</div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="#" class="px-4 py-3 flex justify-between items-center hover:bg-slate-50 dark:hover:bg-[#1f355f] transition">
+              <div>Anak Dwikewarganegaraan</div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="#" class="px-4 py-3 flex justify-between items-center hover:bg-slate-50 dark:hover:bg-[#1f355f] transition">
+              <div>Calon Pekerja Migran Indonesia</div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="#" class="px-4 py-3 flex justify-between items-center hover:bg-slate-50 dark:hover:bg-[#1f355f] transition">
+              <div>Haji / Umroh</div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="#" class="px-4 py-3 flex justify-between items-center hover:bg-slate-50 dark:hover:bg-[#1f355f] transition">
+              <div>Luar Negeri</div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <div class="lg:col-span-8 space-y-8">
+      <!-- Informasi Umum -->
+      <div class="card card-shadow p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-semibold">Informasi Umum</h3>
+          <div class="w-24 h-1 rounded-full bg-gradient-to-r from-accent to-primary"></div>
+        </div>
+        <div class="accordion space-y-4">
+          <details open class="bg-slate-50 dark:bg-[#1f2e55] rounded-lg">
+            <summary class="px-4 py-3 font-semibold flex justify-between items-center">
+              Apa itu Paspor Baru?
+            </summary>
+            <div class="px-4 pb-4">
+              <p class="text-sm leading-relaxed">
+                Permohonan paspor biasa dapat diajukan oleh warga negara Indonesia, baik di dalam maupun luar wilayah Indonesia. Paspor biasa terdiri atas paspor biasa elektronik (e-paspor) dan paspor biasa nonelektronik. Paspor biasa diterbitkan dengan menggunakan Sistem Informasi Manajemen Keimigrasian. Permohonan paspor biasa dapat diajukan secara manual atau elektronik dengan melampirkan dokumen kelengkapan persyaratan.
+              </p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Persyaratan -->
+      <div class="card card-shadow p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-semibold">Persyaratan</h3>
+          <div class="w-24 h-1 rounded-full bg-gradient-to-r from-accent to-primary"></div>
+        </div>
+        <div class="accordion space-y-3">
+          <details class="bg-slate-50 dark:bg-[#1f2e55] rounded-lg">
+            <summary class="px-4 py-3 font-semibold flex justify-between items-center">
+              Daftar Persyaratan
+            </summary>
+            <div class="px-4 pb-4">
+              <ol class="list-decimal pl-5 text-sm leading-relaxed space-y-1">
+                <li>Kartu tanda penduduk (KTP) yang masih berlaku atau surat keterangan pindah ke luar negeri</li>
+                <li>Kartu keluarga (KK)</li>
+                <li>Dokumen berupa akta kelahiran, akta perkawinan, buku nikah, ijazah, atau surat baptis*</li>
+                <li>Surat pewarganegaraan Indonesia bagi Orang Asing yang memperoleh kewarganegaraan Indonesia atau penyampaian pernyataan untuk memilih kewarganegaraan sesuai peraturan</li>
+                <li>Surat penetapan ganti nama (jika ada) dari pejabat berwenang</li>
+              </ol>
+              <p class="mt-2 text-xs italic">*Nama, tempat dan tanggal lahir, serta nama orang tua harus tercantum dalam dokumen. Jika tidak, Anda dapat melampirkan surat keterangan dari instansi yang berwenang.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Prosedur -->
+      <div class="card card-shadow p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-semibold">Prosedur</h3>
+          <div class="w-24 h-1 rounded-full bg-gradient-to-r from-accent to-primary"></div>
+        </div>
+        <div class="accordion space-y-3">
+          <details class="bg-slate-50 dark:bg-[#1f2e55] rounded-lg">
+            <summary class="px-4 py-3 font-semibold flex justify-between items-center">
+              Langkah-langkah Pengajuan
+            </summary>
+            <div class="px-4 pb-4">
+              <p class="text-sm leading-relaxed mb-2">
+                Lakukan pendaftaran melalui aplikasi M-Paspor yang dapat diunduh melalui App Store atau Google Play. Permohonan manual dapat dilakukan dengan langkah berikut:
+              </p>
+              <ul class="list-disc pl-5 text-sm space-y-1">
+                <li>Isi formulir permohonan paspor.</li>
+                <li>Siapkan dokumen persyaratan.</li>
+                <li>Datang ke kantor imigrasi terdekat.</li>
+                <li>Bayar biaya dan ambil foto serta sidik jari.</li>
+                <li>Ambil paspor setelah jadi sesuai jadwal.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Tombol aksi -->
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="#" class="flex-1 inline-flex justify-center items-center gap-2 px-6 py-3 bg-accent text-white font-semibold rounded-lg shadow hover:brightness-105 transition">
+          Ajukan Sekarang
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a href="#" class="flex-1 inline-flex justify-center items-center gap-2 px-6 py-3 border border-slate-300 rounded-lg font-semibold transition hover:bg-slate-50">
+          Pelajari Lebih Lanjut
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script: dark mode toggle -->
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const root = document.body;
+    const icon = document.getElementById('theme-icon');
+    function setTheme(dark) {
+      if (dark) {
+        root.setAttribute('data-theme','dark');
+        icon.textContent = '🌞';
+      } else {
+        root.setAttribute('data-theme','light');
+        icon.textContent = '🌙';
+      }
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') setTheme(true);
+    else if (saved === 'light') setTheme(false);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme(true);
+
+    toggle.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      setTheme(!isDark);
+    });
+  </script>
+</body>
+</html>
